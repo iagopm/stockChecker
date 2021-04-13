@@ -7,6 +7,7 @@ Java JDK 11+
 Features:
 
 -Has a refresh one by one option (asynchronous) or a synchronous where the websites are refreshed indenpendently.
+
 -Gui is optional but recommended.
 
 Sample usage:
