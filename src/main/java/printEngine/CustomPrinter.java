@@ -3,6 +3,8 @@ package printEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import model.BasePage;
+import model.CustomAsyncPage;
 import model.CustomPage;
 import utils.Container;
 
@@ -20,14 +22,13 @@ public class CustomPrinter {
 		System.out.println(text);
 	}
 
-	private void sout(String text) {
-		logger.info(text);
-		System.out.println(text);
-	}
-
 	private void logErrorAndSout(String text) {
 		logger.error(text);
 		System.out.println(text);
+	}
+
+	private void debug(String body) {
+		logger.debug(body);
 	}
 
 	public void printStartingMessage() {
@@ -43,7 +44,7 @@ public class CustomPrinter {
 	}
 
 	public void printBody(String body) {
-		sout(body);
+		debug(body);
 	}
 
 	public void printException(Exception e) {
@@ -54,12 +55,24 @@ public class CustomPrinter {
 		logAndSout(page.toString());
 	}
 
-	public void printRefreshingPage(CustomPage page) {
-		logAndSout(page.toCLI());
+	public void printRefreshingPage(CustomAsyncPage latestPageRefreshed) {
+		logAndSout(latestPageRefreshed.toCLI());
 	}
 
 	public void printRefreshingPageAvailable(CustomPage page) {
 		logAndSout(container.configuration.get("availableMessage") + page.toCLI());
 
+	}
+
+	public void printRefreshingPageAvailable(CustomAsyncPage latestPageRefreshed) {
+		logAndSout(latestPageRefreshed.toCLI());
+	}
+
+	public void printRefreshingPage(CustomPage page) {
+		logAndSout(page.toCLI());
+	}
+
+	public void printPage(BasePage page) {
+		logAndSout(page.toString());
 	}
 }

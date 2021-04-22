@@ -1,14 +1,14 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import concurrency.AsyncChecker;
 import concurrency.Checker;
 import model.CustomAsyncPage;
 import model.CustomPage;
+import utils.Caster;
 import utils.Container;
 
 public class StockApplication implements Application {
@@ -30,13 +30,9 @@ public class StockApplication implements Application {
 	private void start() {
 		container.printer.printLaunchingThreadsMessage();
 		if (!container.configuration.aSyncMode) {
-			container.fetcher.pages.forEach(p -> service.execute(new Checker(p, container)));
+			container.fetcher.pages.forEach(p -> service.execute(new Checker(Caster.castToCustom(p), container)));
 		} else {
-			List<CustomAsyncPage> pages = new ArrayList<>();
-			for (CustomPage page : container.fetcher.pages) {
-				pages.add(new CustomAsyncPage(page.url, page.word, page.refreshTime));
-			}
-			service.execute(new AsyncChecker(pages, container));
+			service.execute(new AsyncChecker(Caster.castToAsync(container.fetcher.pages), container));
 		}
 		if (container.configuration.isGuiEnabled) {
 			container.guiEngine.show();

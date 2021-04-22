@@ -16,11 +16,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import utils.Container;
-import model.CustomPage;
+import model.BasePage;
 
 public class PageFetcher {
 	private Container container;
-	public List<CustomPage> pages;
+	public List<BasePage> pages;
 
 	public PageFetcher(Container container) {
 		this.container = container;
@@ -28,8 +28,8 @@ public class PageFetcher {
 		pages = processRaw(container.configuration.fetchUrl);
 	}
 
-	private List<CustomPage> processRaw(String url) {
-		List<CustomPage> pagesToReturn = new ArrayList<CustomPage>();
+	private List<BasePage> processRaw(String url) {
+		List<BasePage> pagesToReturn = new ArrayList<BasePage>();
 		String body = container.bodyFetcher.getHtml(url);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -47,7 +47,7 @@ public class PageFetcher {
 					int elementRefreshTime = element.getElementsByTagName("time").item(0).getTextContent().equals("")
 							? container.configuration.getInt("refreshDefaultTime")
 							: Integer.parseInt(element.getElementsByTagName("time").item(0).getTextContent());
-					pagesToReturn.add(new CustomPage(elementUrl, elementWord, elementRefreshTime));
+					pagesToReturn.add(new BasePage(elementUrl, elementWord, elementRefreshTime));
 				}
 			}
 			pagesToReturn.forEach(p -> container.printer.printPage(p));

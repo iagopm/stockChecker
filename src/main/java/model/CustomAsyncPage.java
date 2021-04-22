@@ -1,6 +1,6 @@
 package model;
 
-public class CustomAsyncPage extends CustomPage {
+public class CustomAsyncPage extends BasePage {
 
 	public final String url;
 	public final String word;
